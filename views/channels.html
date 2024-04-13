@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- <link rel="stylesheet" href="channels.css" /> -->
+    <title>Ruche App</title>
+  </head>
+  <body>
+    <div class="chat-container">
+      <header class="chat-header">
+        <h1><i class="fas fa-smile"></i> RucheApp</h1>
+        <a id="leave-btn" href="/welcome" class="btn">Quitter la Ruche</a>
+      </header>
+      <main class="chat-main">
+        <div class="chat-sidebar">
+          <h3><i class="fas fa-comments"></i> Room Name:</h3>
+          <h2 id="room-name"></h2>
+          <h3><i class="fas fa-users"></i> id </h3>
+          <ul id="users"></ul>
+        </div>
+        <div class="chat-messages"></div>
+      </main>
+      <div class="chat-form-container">
+        <form id="chat-form">
+          <input
+            id="msg"
+            type="text"
+            placeholder="Ecrire"
+            required
+            autocomplete="off"
+          />
+          <button class="btn"><i class="fas fa-paper-plane"></i> Entrer</button>
+        </form>
+      </div>
+    </div>
+
+    <script src="./socket.io/socket.io.js"></script>
+    <script>
+        
+      $(function (){
+          
+          var socket = io()
+
+          $("chat-form").submit(function(e){
+              e.preventDefault();
+              
+              socket.emit("chat message",$("#msg").val() );
+              $("#msg").val("");
+// emit pour envoyer un msg sur notre serveur lorsque qq envoi un msg
+// prevent.default pour empecher le rechargement de la page. .val(le 1er) permet de recuperer la valeur de n'input. le 2eme val permet de remettre vide l'input afin de taper un nv msg.
+              return false;
+          })
+          socket.on('chat message', function(msg){
+              
+              $("#messages").append($("<p>").text(msg))
+
+          })
+       })
+  </script>
+  
+
+
+
+    <script src="channels.js"></script>
+  </body>
+</html>

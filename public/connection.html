@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="./recupere.js" defer></script>
+</head>
+<body>
+  
+    <div id="messages"></div>
+    <form action="">
+        <input id="msg" autocomplete="off" /><button>Send</button>
+    </form>
+
+    <form name ="form" autocomplete="off"" >
+        <p>Nom : <input type="text" id="name" required/></p>
+        <p>Prénom : <input type="email" id="email" required/></p>
+        <p>Courriel : <input type="text" id="contact" required/></p>
+        <button id ="btn1" type="submit" name="submit" value="submit">J'EN AI MARRE</button>
+    </form>
+ 
+
+
+    <script src="/socket.io/socket.io.js"></script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+
+
+    <script>
+        
+        $(function (){
+            
+            var socket = io()
+
+            $("form").submit(function(e){
+                e.preventDefault();
+                
+                socket.emit("chat message",$("#msg").val() );
+                $("#msg").val("");
+// emit pour envoyer un msg sur notre serveur lorsque qq envoi un msg
+// prevent.default pour empecher le rechargement de la page. .val(le 1er) permet de recuperer la valeur de n'input. le 2eme val permet de remettre vide l'input afin de taper un nv msg.
+                return false;
+            })
+            socket.on('chat message', function(msg){
+                
+                $("#messages").append($("<p>").text(msg))
+
+            })
+         })
+    </script>
+
+    
+</body>
+</html>
+
+  
